@@ -1,25 +1,28 @@
 /**
  * Combine all reducers in this file and export the combined reducers.
+ * If we were to do this in store.js, reducers wouldn't be hot reloadable.
  */
 
+import { combineReducers } from 'redux';
 import { fromJS } from 'immutable';
-import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { reducer as notifications } from 'react-notification-system-redux';
+import { apolloClient } from 'app/apollo';
 
-import globalReducer from 'containers/App/reducer';
-import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import languageProviderReducer from 'app/providers/LanguageProvider/reducer';
 
+import baseReducer from 'app/modules/base/reducer';
 /*
  * routeReducer
  *
  * The reducer merges route location changes into our immutable state.
- * The change is necessitated by moving to react-router-redux@5
+ * The change is necessitated by moving to react-router-redux@4
  *
  */
 
 // Initial routing state
 const routeInitialState = fromJS({
-  location: null,
+  locationBeforeTransitions: null,
 });
 
 /**
@@ -30,7 +33,7 @@ function routeReducer(state = routeInitialState, action) {
     /* istanbul ignore next */
     case LOCATION_CHANGE:
       return state.merge({
-        location: action.payload,
+        locationBeforeTransitions: action.payload,
       });
     default:
       return state;
@@ -38,13 +41,12 @@ function routeReducer(state = routeInitialState, action) {
 }
 
 /**
- * Creates the main reducer with the dynamically injected ones
+ * Creates the main reducer with the asynchronously loaded ones
  */
-export default function createReducer(injectedReducers) {
-  return combineReducers({
-    route: routeReducer,
-    global: globalReducer,
-    language: languageProviderReducer,
-    ...injectedReducers,
-  });
-}
+export default combineReducers({
+  apollo: apolloClient.reducer(),
+  route: routeReducer,
+  language: languageProviderReducer,
+  notifications,
+  base: baseReducer,
+});

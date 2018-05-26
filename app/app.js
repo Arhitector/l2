@@ -5,86 +5,109 @@
  * code.
  */
 
+/* eslint-disable import/first */
+
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
-
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import FontFaceObserver from 'fontfaceobserver';
-import createHistory from 'history/createBrowserHistory';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import Perf from 'react-addons-perf';
+
+import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
+import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 
-// Import root app
-import App from 'containers/App';
+import { ApolloProvider } from "react-apollo";
 
-// Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import { ThemeProvider } from 'styled-components';
+
+import reducers from './reducers';
+
+import SystemEventAndNotificationsProvider from 'providers/SystemEventAndNotificationsProvider';
 
 // Load the favicon, the manifest.json file and the .htaccess file
-/* eslint-disable import/no-webpack-loader-syntax */
-import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-import '!file-loader?name=[name].[ext]!./images/icon-72x72.png';
-import '!file-loader?name=[name].[ext]!./images/icon-96x96.png';
-import '!file-loader?name=[name].[ext]!./images/icon-120x120.png';
-import '!file-loader?name=[name].[ext]!./images/icon-128x128.png';
-import '!file-loader?name=[name].[ext]!./images/icon-144x144.png';
-import '!file-loader?name=[name].[ext]!./images/icon-152x152.png';
-import '!file-loader?name=[name].[ext]!./images/icon-167x167.png';
-import '!file-loader?name=[name].[ext]!./images/icon-180x180.png';
-import '!file-loader?name=[name].[ext]!./images/icon-192x192.png';
-import '!file-loader?name=[name].[ext]!./images/icon-384x384.png';
-import '!file-loader?name=[name].[ext]!./images/icon-512x512.png';
-import '!file-loader?name=[name].[ext]!./manifest.json';
-import 'file-loader?name=[name].[ext]!./.htaccess'; // eslint-disable-line import/extensions
-/* eslint-enable import/no-webpack-loader-syntax */
+/* eslint-disable import/no-unresolved, import/extensions */
+/* eslint-enable import/no-unresolved, import/extensions */
 
-import configureStore from './configureStore';
+// Import Language Provider
+import LanguageProvider from 'app/providers/LanguageProvider';
+
+import RavenProvider from 'app/providers/RavenProvider';
+import { env } from 'app/environment';
+
+import { apolloClient } from 'app/apollo';
 
 // Import i18n messages
-import { translationMessages } from './i18n';
+import { translationMessages } from 'app/i18n';
 
 // Import CSS reset and Global Styles
-import './global-styles';
+import 'app/global-styles';
 
-// Observe loading of Open Sans (to remove open sans, remove the <link> tag in
-// the index.html file and this observer)
-const openSansObserver = new FontFaceObserver('Open Sans', {});
+// Import StyledComponent Theme Provider
+import themeStyled from 'app/theme-styled';
 
-// When Open Sans is loaded, add a font-family using Open Sans to the body
-openSansObserver.load().then(() => {
-  document.body.classList.add('fontLoaded');
-}, () => {
-  document.body.classList.remove('fontLoaded');
-});
+// Import Material-UI Theme Provider
+import davinciTheme from 'app/theme-mui';
 
-// Create redux store with history
+// Import root routes
+import createRoutes from 'app/routes';
+
 const initialState = {};
-const history = createHistory();
-const store = configureStore(initialState, history);
-const MOUNT_NODE = document.getElementById('app');
+
+injectTapEventPlugin();
+
+if (env === 'development') {
+  window.Perf = Perf;
+}
+
+const store = createStore(
+  reducers,
+  initialState,
+  compose(
+    applyMiddleware(thunk, apolloClient.middleware()),
+    (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f, // eslint-disable-line
+  ),
+);
+
+const rootRoute = {
+  childRoutes: createRoutes(store),
+};
 
 const render = (messages) => {
   ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </LanguageProvider>
-    </Provider>,
-    MOUNT_NODE
+    <ThemeProvider theme={themeStyled}>
+      <ApolloProvider client={apolloClient} store={store}>
+        <RavenProvider store={store}>
+          <SystemEventAndNotificationsProvider>
+            <LanguageProvider messages={messages}>
+              <MuiThemeProvider muiTheme={getMuiTheme(davinciTheme)}>
+                <Router
+                  history={browserHistory}
+                  routes={rootRoute}
+                  render={applyRouterMiddleware(useScroll())}
+                />
+              </MuiThemeProvider>
+            </LanguageProvider>
+          </SystemEventAndNotificationsProvider>
+        </RavenProvider>
+      </ApolloProvider>
+    </ThemeProvider>,
+    document.getElementById('app'),
   );
 };
 
+// Hot reloadable translation json files
 if (module.hot) {
-  // Hot reloadable React components and translation json files
   // modules.hot.accept does not accept dynamic dependencies,
   // have to be constants at compile-time
-  module.hot.accept(['./i18n', 'containers/App'], () => {
-    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+  module.hot.accept('./i18n', () => {
     render(translationMessages);
   });
 }
@@ -96,9 +119,7 @@ if (!window.Intl) {
   }))
     .then(() => Promise.all([
       import('intl/locale-data/jsonp/en.js'),
-      import('intl/locale-data/jsonp/de.js'),
-    ]))
-    .then(() => render(translationMessages))
+    ])).then(() => render(translationMessages))
     .catch((err) => {
       throw err;
     });
@@ -109,6 +130,6 @@ if (!window.Intl) {
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
-if (process.env.NODE_ENV === 'production') {
+if (env === 'production') {
   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }

@@ -1,0 +1,68 @@
+.screen {
+  &-xs {
+    @media all and (min-width: $screen-xs) {
+      display: none !important;
+    }
+  }
+  &-sm {
+    &-min {
+      @media all and (max-width: $screen-xs - 1px) {
+        display: none !important;
+      }
+    }
+    &-max {
+      @media all and (min-width: $screen-sm) {
+        display: none !important;
+      }
+    }
+    @media all and (max-width: $screen-xs - 1px) {
+      display: none !important;
+    }
+
+    @media all and (min-width: $screen-sm) {
+      display: none !important;
+    }
+  }
+  &-md {
+    &-min {
+      @media all and (max-width: $screen-sm - 1px) {
+        display: none !important;
+      }
+    }
+    &-max {
+      @media all and (min-width: $screen-md) {
+        display: none !important;
+      }
+    }
+    @media all and (max-width: $screen-sm - 1px) {
+      display: none !important;
+    }
+
+    @media all and (min-width: $screen-md) {
+      display: none !important;
+    }
+  }
+  &-lg {
+    &-min {
+      @media all and (max-width: $screen-md - 1px) {
+        display: none !important;
+      }
+    }
+    &-max {
+      @media all and (min-width: $screen-lg) {
+        display: none !important;
+      }
+    }
+    @media all and (max-width: $screen-md - 1px) {
+      display: none !important;
+    }
+    @media all and (min-width: $screen-lg) {
+      display: none !important;
+    }
+  }
+  &-xlg {
+    @media all and (max-width: $screen-lg - 1px) {
+      display: none !important;
+    }
+  }
+}

@@ -1,0 +1,79 @@
+@import "./variables";
+
+@mixin screen-xs {
+  @media all and (max-width: $screen-xs) {
+    @content
+  }
+}
+
+@mixin screen-sm {
+  @media all and (min-width: $screen-xs) {
+    @content
+  }
+
+  @media all and (max-width: $screen-sm - 1px) {
+    @content
+  }
+}
+
+@mixin screen-sm-min {
+  @media all and (min-width: $screen-xs) {
+    @content
+  }
+
+}
+
+@mixin screen-sm-max {
+  @media all and (max-width: $screen-sm - 1px) {
+    @content
+  }
+}
+
+@mixin screen-md {
+  @media all and (min-width: $screen-sm) {
+    @content
+  }
+
+  @media all and (max-width: $screen-md - 1px) {
+    @content
+  }
+}
+
+@mixin screen-md-min {
+  @media all and (min-width: $screen-sm) {
+    @content
+  }
+}
+
+@mixin screen-md-max {
+  @media all and (max-width: $screen-md - 1px) {
+    @content
+  }
+}
+
+@mixin screen-lg {
+  @media all and (min-width: $screen-md) {
+    @content
+  }
+  @media all and (max-width: $screen-lg - 1px) {
+    @content
+  }
+}
+
+@mixin screen-lg-min {
+  @media all and (min-width: $screen-md) {
+    @content
+  }
+}
+
+@mixin screen-lg-max {
+  @media all and (max-width: $screen-lg - 1px) {
+    @content
+  }
+}
+
+@mixin screen-xlg {
+  @media all and (min-width: $screen-lg) {
+    @content
+  }
+}

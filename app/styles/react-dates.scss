@@ -1,0 +1,17 @@
+.DateRangePicker {
+  &__picker {
+
+    &--portal {
+      z-index: 1000 !important;
+    }
+  }
+  .DateRangePickerInput__clear-dates {
+    padding: 5px 10px;
+    margin-left: -35px;
+    svg {
+      height: 12px;
+      width: 12px;
+      vertical-align: initial;
+    }
+  }
+}
