@@ -1,3 +1,23 @@
 {
-  "app.components": "Компонент"
+
+  "IncorrectUsernameOrPassword": "Неверный логин или пароль",
+
+  "Login": "Логин",
+
+  "Offers": "Предложения",
+
+  "PageNotFound": "Страница не найдена",
+  "Password": "Пароль",
+
+  "Reminders": "Напоминания",
+  "Requests": "Предложения",
+
+  "Search": "Поиск",
+  "SignIn": "Войти",
+  "SignOut": "Выйти из аккаунта",
+  "Statistics": "Статистика",
+
+  "Tours": "Туры",
+
+  "": ""
 }

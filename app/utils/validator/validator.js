@@ -1,7 +1,9 @@
 import React from 'react' // eslint-disable-line
 import { FormattedMessage } from 'react-intl';
 
-export default class Validator {
+import { assign } from 'lodash';
+
+class Validator {
   constructor(field, config = {}) {
     this.type = 'required';
     this.field = field;
@@ -9,10 +11,10 @@ export default class Validator {
     this.messageValues = {};
   }
 
-  addError(errors, data, index) {
+  addError(errors, data) {
     const errorText = this.getError(data);
-    if (errorText) {
-      errors[this.getField()] = { errorText, index };
+    if (this.getError(data)) {
+      errors[this.getField()] = { errorText };
     }
     return errors;
   }
@@ -41,14 +43,14 @@ export default class Validator {
     if (message) {
       return <FormattedMessage {...message} />;
     }
-    if (messages) {
-      const obj = {
-        ...messages[`validation_${this.type}_${this.field}`],
-        ...this.messageValues,
-      };
+    const key = `validation_${this.type}_${this.field}`;
 
+    if (messages && messages[key]) {
+      const obj = assign({}, messages[key], this.messageValues);
       return <FormattedMessage {...obj} />;
     }
-    return 'no message';
+    return 'Error';
   }
 }
+
+export default Validator;

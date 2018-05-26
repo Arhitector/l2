@@ -6,7 +6,7 @@ import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import Raven from 'raven-js';
-import { API_SENTRY_DSN } from 'app/environment';
+import { SENTRY_PUBLIC_KEY, SENTRY_PROJECT } from 'app/environment';
 
 export default class RavenProvider extends Component {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class RavenProvider extends Component {
     );
 
     Raven
-      .config(API_SENTRY_DSN)
+      .config(`https://${SENTRY_PUBLIC_KEY}@sentry.io/${SENTRY_PROJECT}`)
       .install();
   }
 

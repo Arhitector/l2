@@ -1,10 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-
 import { vars } from 'app/variables';
 import styled from 'styled-components';
-
-import IconRespawn from 'material-ui/svg-icons/action/alarm';
 
 const Nav = styled.nav`
   display: flex;

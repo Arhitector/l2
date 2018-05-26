@@ -3,7 +3,7 @@ const themes = {
   red: {
     colors: {
       primary: '#772036',
-      
+
       main: '#000000',
       opposite: '#FFFFFF',
     },
@@ -18,7 +18,7 @@ const themes = {
     custom: {
       aside: '14rem',
     },
-  }
+  },
 };
 
 export const vars = themes[theme];

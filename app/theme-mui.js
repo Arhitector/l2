@@ -21,3 +21,8 @@ export default {
     // shadowColor: fullBlack,
   },
 };
+export const styles = {
+  raisedButton: {
+    borderRadius: 4,
+  },
+};

@@ -1,5 +1,4 @@
 import React from 'react';
-import { compose } from 'recompose';
 import styled from 'styled-components';
 
 import { vars } from 'app/variables';

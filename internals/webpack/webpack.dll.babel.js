@@ -11,7 +11,6 @@
 const { join } = require('path');
 const defaults = require('lodash/defaultsDeep');
 const webpack = require('webpack');
-
 const pkg = require(join(process.cwd(), 'package.json'));
 const dllPlugin = require('../config').dllPlugin;
 
@@ -31,7 +30,7 @@ module.exports = require('./webpack.base.babel')({
     library: '[name]',
   },
   plugins: [
-    new webpack.DllPlugin({ name: '[name]', path: join(outputPath, '[name].json') }), // eslint-disable-line no-new
+    new webpack.DllPlugin({ name: '[name]', path: join(outputPath, '[name].json') }),
   ],
   performance: {
     hints: false,

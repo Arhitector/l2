@@ -9,6 +9,9 @@
 
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
+
+import './styles/app.scss';
+
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -20,7 +23,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from 'react-apollo';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -29,12 +32,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { ThemeProvider } from 'styled-components';
 
 import reducers from './reducers';
-
-import SystemEventAndNotificationsProvider from 'providers/SystemEventAndNotificationsProvider';
-
-// Load the favicon, the manifest.json file and the .htaccess file
-/* eslint-disable import/no-unresolved, import/extensions */
-/* eslint-enable import/no-unresolved, import/extensions */
 
 // Import Language Provider
 import LanguageProvider from 'app/providers/LanguageProvider';
@@ -45,7 +42,7 @@ import { env } from 'app/environment';
 import { apolloClient } from 'app/apollo';
 
 // Import i18n messages
-import { translationMessages } from 'app/i18n';
+import { translationMessages } from 'app/translations/i18n';
 
 // Import CSS reset and Global Styles
 import 'app/global-styles';
@@ -67,11 +64,14 @@ if (env === 'development') {
   window.Perf = Perf;
 }
 
+// Set up the router, wrapping all Routes in the App component
+
 const store = createStore(
   reducers,
-  initialState,
+  initialState, // initial state
   compose(
-    applyMiddleware(thunk, apolloClient.middleware()),
+    applyMiddleware(thunk),
+    // If you are using the devToolsExtension, you can add it here also
     (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f, // eslint-disable-line
   ),
 );
@@ -85,17 +85,18 @@ const render = (messages) => {
     <ThemeProvider theme={themeStyled}>
       <ApolloProvider client={apolloClient} store={store}>
         <RavenProvider store={store}>
-          <SystemEventAndNotificationsProvider>
-            <LanguageProvider messages={messages}>
+            <LanguageProvider store={store} messages={messages}>
               <MuiThemeProvider muiTheme={getMuiTheme(davinciTheme)}>
                 <Router
                   history={browserHistory}
                   routes={rootRoute}
-                  render={applyRouterMiddleware(useScroll())}
+                  render={
+                    // Scroll to top when going to a new page, imitating default browser behaviour
+                    applyRouterMiddleware(useScroll())
+                  }
                 />
               </MuiThemeProvider>
             </LanguageProvider>
-          </SystemEventAndNotificationsProvider>
         </RavenProvider>
       </ApolloProvider>
     </ThemeProvider>,
@@ -107,12 +108,12 @@ const render = (messages) => {
 if (module.hot) {
   // modules.hot.accept does not accept dynamic dependencies,
   // have to be constants at compile-time
-  module.hot.accept('./i18n', () => {
+  module.hot.accept('./translations/i18n', () => {
     render(translationMessages);
   });
 }
 
-// Chunked polyfill for browsers without Intl support
+// // Chunked polyfill for browsers without Intl support
 if (!window.Intl) {
   (new Promise((resolve) => {
     resolve(import('intl'));
@@ -130,6 +131,6 @@ if (!window.Intl) {
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
-if (env === 'production') {
-  require('offline-plugin/runtime').install(); // eslint-disable-line global-require
-}
+// if (process.env.NODE_ENV === 'production') {
+//   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
+// }

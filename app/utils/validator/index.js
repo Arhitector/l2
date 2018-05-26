@@ -5,10 +5,15 @@ export default class Validation {
     this.data = {};
   }
 
-  getErrors(data, index) {
+  getErrors(data) {
     this.errors = {};
     this.data = data;
-    this.validators.map(validator => this.errors = validator.addError(this.errors, data, index));
+    this.validators.forEach((validator) => {
+      this.errors = validator.addError(this.errors, data);
+    });
+    this.validators.forEach((validator) => {
+      this.errors = validator.addError(this.errors, data);
+    });
     return this.errors;
   }
 

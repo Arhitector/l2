@@ -1,6 +1,6 @@
 import Validator from './validator';
 import Required from './required';
-import Min from './min';
+import MinLength from './minLength';
 import Equal from './equal';
 
 export default class Password extends Validator {
@@ -12,7 +12,7 @@ export default class Password extends Validator {
       newPassword: new Required(fields.newPassword, { messages }),
       newPasswordConfirmation: new Required(fields.newPasswordConfirmation, { messages }),
     };
-    this.min = new Min('newPassword', { min: minSize, messages });
+    this.min = new MinLength('newPassword', { minLength: minSize, messages });
     this.equal = new Equal('newPasswordConfirmation', { equalField: 'newPassword', messages });
   }
 

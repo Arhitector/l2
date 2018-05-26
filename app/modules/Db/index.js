@@ -1,11 +1,11 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 
 class db extends React.PureComponent {
   render() {
+    const { db } = this.props;
     return (
         <div>
-          db
+          {db}
         </div>
     );
   }

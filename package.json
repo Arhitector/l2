@@ -1,23 +1,34 @@
 {
-  "name": "hotels-panel",
+  "name": "hotel-panel",
   "scripts": {
-    "lint": "eslint ./app",
+    "lint": "eslint app",
     "lint-fix": "eslint ./app --fix",
+    "postinstall": "npm run build:dll",
+    "postsetup": "npm run build:dll",
     "build": "better-npm-run build",
     "build:dll": "node ./internals/scripts/dependencies.js",
-    "start": "node server",
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "start": "cross-env NODE_ENV=development node server",
     "graph": "babel-node --presets es2015 ./graph/index.js",
-    "update-schema": "babel-node  --presets es2015 ./graph/scripts/updateSchema.js"
+    "update-schema": "babel-node  --presets es2015 ./graph/scripts/updateSchema.js",
+    "test": "jest"
   },
   "betterScripts": {
     "build": {
-      "command": "GRAPH_URL=https://stage.hotel-api.davincits.network WS_URL=wss://stage.hotel-api.davincits.network:4000 webpack --verbose --colors --progress --display-error-details --config internals/webpack/webpack.prod.babel.js"
+      "command": "BASE_URL=http://18.196.107.223:3000 GRAPH_URL=http://18.196.107.223:4000 WS_URL=ws://18.196.107.223:4010 webpack --verbose --colors --progress --display-error-details --config internals/webpack/webpack.prod.babel.js"
     }
   },
   "pre-commit": [
     "lint"
   ],
+  "jest": {
+    "globals": {
+      "__DEV__": true
+    },
+    "testEnvironment": "node",
+    "transform": {
+      ".+\\.js?$": "babel-jest"
+    }
+  },
   "babel": {
     "presets": [
       [
@@ -67,39 +78,15 @@
       "eventsource-polyfill"
     ]
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "app/**/*.{js,jsx}",
-      "!app/**/*.test.{js,jsx}",
-      "!app/*/RbGenerated*/*.{js,jsx}",
-      "!app/app.js",
-      "!app/routes.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 98,
-        "branches": 91,
-        "functions": 98,
-        "lines": 98
-      }
-    },
-    "moduleDirectories": [
-      "node_modules",
-      "app"
-    ],
-    "moduleNameMapper": {
-      ".*\\.(css|less|styl|scss|sass)$": "<rootDir>/internals/mocks/cssModule.js",
-      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/image.js"
-    },
-    "setupTestFrameworkScriptFile": "<rootDir>/internals/testing/test-bundler.js",
-    "testRegex": "tests/.*\\.test\\.js$"
-  },
   "dependencies": {
-    "apollo-boost": "^0.1.6",
+    "apisauce": "^0.14.1",
+    "apollo-cache-inmemory": "^1.2.1",
     "apollo-client": "^2.3.1",
-    "axios": "^0.16.2",
-    "babel-polyfill": "6.20.0",
-    "better-npm-run": "^0.0.8",
+    "apollo-client-preset": "^1.0.8",
+    "apollo-link": "^1.2.2",
+    "apollo-link-http": "^1.5.4",
+    "apollo-link-ws": "^1.0.8",
+    "babel-polyfill": "^6.26.0",
     "chalk": "1.1.3",
     "compression": "1.6.2",
     "cross-env": "3.1.3",
@@ -111,41 +98,36 @@
     "invariant": "2.2.2",
     "ip": "1.1.4",
     "lodash": "4.17.2",
-    "material-ui": "^0.18.7",
+    "material-ui": "^0.18.5",
     "minimist": "1.2.0",
     "moment": "2.18.1",
-    "posix-character-classes": "^1.0.0",
     "prop-types": "^15.6.1",
-    "raven-js": "^3.24.2",
+    "raven-js": "^3.25.1",
     "react": "15.4.1",
     "react-apollo": "^2.1.4",
-    "react-day-picker": "^7.1.6",
     "react-dom": "15.4.1",
-    "react-event-listener": "^0.5.3",
     "react-helmet": "3.2.2",
     "react-intl": "2.1.5",
-    "react-moment-proptypes": "^1.5.0",
     "react-notification-system": "^0.2.15",
     "react-notification-system-redux": "^1.1.4",
     "react-redux": "^5.0.6",
     "react-router": "3.0.0",
     "react-router-redux": "4.0.6",
     "react-router-scroll": "0.4.1",
-    "react-slick": "^0.22.3",
-    "recompose": "^0.23.5",
-    "redux": "^3.6.0",
-    "redux-immutable": "3.0.8",
-    "redux-saga": "0.14.0",
+    "react-toastr-basic": "^1.1.14",
+    "recompose": "0.25.0",
+    "redux": "4.0.0",
+    "redux-raven-middleware": "^1.2.0",
+    "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
-    "reselect": "2.5.4",
-    "sanitize.css": "4.1.0",
+    "reselect": "^3.0.1",
+    "sanitize.css": "^5.0.0",
     "styled-components": "1.1.2",
-    "subscriptions-transport-ws": "^0.7.1",
+    "subscriptions-transport-ws": "^0.9.9",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1"
   },
   "devDependencies": {
-    "@storybook/react": "^3.3.15",
     "babel-cli": "6.18.0",
     "babel-core": "6.21.0",
     "babel-eslint": "7.1.1",
@@ -161,51 +143,56 @@
     "babel-preset-react": "6.16.0",
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.16.0",
+    "better-npm-run": "^0.1.0",
     "body-parser": "^1.17.2",
     "cheerio": "0.22.0",
     "circular-dependency-plugin": "2.0.0",
-    "classnames": "^2.2.5",
+    "classnames": "2.2.5",
     "css-loader": "0.26.1",
     "dotenv-webpack": "1.5.4",
     "empty-module": "0.0.2",
     "enzyme": "2.6.0",
+    "escope": "^3.6.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "10.0.1",
+    "eslint-import-resolver-webpack": "0.8.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-redux-saga": "0.1.5",
     "eventsource-polyfill": "0.9.6",
     "exports-loader": "0.6.3",
     "file-loader": "1.1.10",
-    "har-schema": "^2.0.0",
     "html-loader": "0.4.4",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "3.2.0",
+    "image-webpack-loader": "4.1.0",
+    "jest": "^22.4.3",
     "json-loader": "0.5.7",
     "json-server": "0.9.4",
     "jsonwebtoken": "^7.4.1",
     "node-plop": "0.5.4",
+    "node-sass": "^4.9.0",
+    "npm-check": "^5.7.1",
     "offline-plugin": "4.9.0",
     "pre-commit": "1.1.3",
     "react-addons-perf": "^15.4.2",
+    "react-addons-shallow-compare": "^15.6.2",
     "react-addons-test-utils": "15.4.1",
-    "react-dates": "^16.5.0",
+    "react-dates": "^16.6.1",
+    "react-moment-proptypes": "^1.5.0",
+    "react-sortable-hoc": "^0.6.8",
     "react-tap-event-plugin": "^2.0.1",
-    "react-world-flags": "0.0.3",
     "rimraf": "2.5.4",
     "sass-loader": "6.0.6",
-    "schema-utils": "0.4.5",
     "shelljs": "0.7.5",
-    "style-loader": "0.13.1",
-    "tapable": "1.0.0",
-    "uglify-es": "3.3.9",
-    "uglifyjs-webpack-plugin": "^1.2.2",
-    "url-loader": "0.5.7",
-    "webpack": "4.0.0-beta.3",
-    "webpack-cli": "^2.0.9",
-    "webpack-dev-middleware": "1.9.0",
-    "webpack-hot-middleware": "2.15.0",
-    "webpack-manifest-plugin": "2.0.0-rc.2"
+    "style-loader": "^0.21.0",
+    "webpack": "4.6.0",
+    "webpack-cli": "2.0.15",
+    "webpack-dev-middleware": "3.1.3",
+    "webpack-hot-middleware": "2.22.1",
+    "webpack-manifest-plugin": "2.0.1"
   },
   "engines": {
     "node": "^8.10.0"

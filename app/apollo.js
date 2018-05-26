@@ -1,72 +1,31 @@
-/**
- * Created by Max Kudla.
- */
-
-/* eslint-disable no-underscore-dangle */
-
-// import { toIdValue } from 'apollo-client';
 import { WS_URL, GRAPH_URL } from 'app/environment';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { split } from 'apollo-link';
+import { getOperationAST } from 'graphql';
+import { HttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
 
-// import { ApolloClient, createNetworkInterface } from 'react-apollo';
-
-import ApolloClient from "apollo-boost";
-import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
-
-// Create a normal network interface:
-// const networkInterface = createNetworkInterface({ uri: `${GRAPH_URL}/graphql` });
-
-// networkInterface.use([{
-//   applyMiddleware(req, next) {
-//     if (!req.options.headers) {
-//       req.options.headers = {}; // eslint-disable-line no-param-reassign
-//     }
-//     const token = localStorage.getItem('access-token') ? localStorage.getItem('access-token') : null; // eslint-disable-line no-param-reassign
-//     req.options.headers.Authorization = `Bearer ${token}`; // eslint-disable-line no-param-reassign
-//     next();
-//   },
-// }]);
-
-// const authLink = setContext((_, { headers }) => {
-//   // get the authentication token from local storage if it exists
-//   const token = localStorage.getItem('token');
-//   // return the headers to the context so httpLink can read them
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : "",
-//     }
-//   }
-// });
-
-
-export const webSocketClient = new SubscriptionClient(`${WS_URL}/subscriptions`, {
-  reconnect: true,
-  connectionParams: () => ({
-    authorization: localStorage.getItem('access-token'),
+const link = split(
+  (operation) => {
+    const operationAST = getOperationAST(operation.query, operation.operationName);
+    return !!operationAST && operationAST.operation === 'subscription';
+  },
+  new WebSocketLink({
+    uri: `${WS_URL}/subscriptions`,
+    options: {
+      reconnect: true, // auto-reconnect
+      // carry login state (should use secure websockets (wss) when using this)
+      connectionParams: {
+        authToken: localStorage.getItem('access-token'),
+      },
+    },
   }),
-});
-
-// Extend the network interface with the WebSocket
-// const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, webSocketClient);
-
-function dataIdFromObject(result) {
-  if (result.__typename) {
-    if (result.id !== undefined) {
-      return `${result.__typename}:${result.id}`;
-    }
-    if (result._id !== undefined) {
-      return `${result.__typename}:${result._id}`;
-    }
-  }
-  return null;
-}
+  new HttpLink({ uri: `${GRAPH_URL}/graphql` }),
+);
 
 export const apolloClient = new ApolloClient({
-  uri: "https://w5xlvm3vzz.lp.gql.zone/graphql",
-  customResolvers: {
-    Query: {
-      tour: (_, { tourId }) => toIdValue(dataIdFromObject({ __typename: 'Tour', id: tourId })),
-    },
-  },
-  dataIdFromObject,
+  link,
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+  connectToDevTools: true,
 });

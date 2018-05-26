@@ -18,7 +18,7 @@ const iconProps = {
     height: '1rem',
     margin: `0 ${vars.gap.g2}`,
     color: 'inherit',
-  }
+  },
 };
 
 const MenuList = [
@@ -59,6 +59,7 @@ const Wrapper = styled.aside`
 
 class Header extends React.PureComponent {
   render() {
+    console.log(this.props);
     return (
       <Wrapper>
         <Menu menu={MenuList} />

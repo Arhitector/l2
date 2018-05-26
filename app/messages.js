@@ -35,12 +35,6 @@ export default {
   get Requests() {
     return getFormattedMessage('Requests');
   },
-  get Reservations() {
-    return getFormattedMessage('Reservations');
-  },
-  get HowItWorks() {
-    return getFormattedMessage('How it works');
-  },
 
   get Search() {
     return getFormattedMessage('Search');

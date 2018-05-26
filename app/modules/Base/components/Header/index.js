@@ -20,6 +20,7 @@ const Side = styled.aside`
 
 class Header extends React.PureComponent {
   render() {
+    console.log(this.props);
     return (
       <Wrapper>
         <Side />

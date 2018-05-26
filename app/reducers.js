@@ -7,11 +7,7 @@ import { combineReducers } from 'redux';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as notifications } from 'react-notification-system-redux';
-import { apolloClient } from 'app/apollo';
-
 import languageProviderReducer from 'app/providers/LanguageProvider/reducer';
-
-import baseReducer from 'app/modules/base/reducer';
 /*
  * routeReducer
  *
@@ -44,9 +40,7 @@ function routeReducer(state = routeInitialState, action) {
  * Creates the main reducer with the asynchronously loaded ones
  */
 export default combineReducers({
-  apollo: apolloClient.reducer(),
   route: routeReducer,
   language: languageProviderReducer,
   notifications,
-  base: baseReducer,
 });
