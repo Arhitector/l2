@@ -67,17 +67,50 @@ export default function createRoutes(store) {
         {
           path: 'respawn',
           name: 'respawn',
+          indexRoute: {
+            onEnter: (nextState, replace) => replace('/respawn/list'),
+          },
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('./modules/Respawn'),
             ]);
 
-            const renderRoute = loadModule(cb, store);
+            const renderRoute = loadModule(cb);
 
             importModules.then(([component]) => {
               renderRoute(component);
             }).catch(errorLoading);
           },
+          childRoutes: [
+            {
+              path: 'list',
+              name: 'list',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('./modules/Respawn/components/List'),
+                ]);
+                const renderRoute = loadModule(cb);
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                }).catch(errorLoading);
+              },
+            },
+            {
+              path: '(mutation-boss)(:bossId)',
+              name: 'mutationBoss',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('./modules/Respawn/components/MutationBoss'),
+                ]);
+                const renderRoute = loadModule(cb);
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+          ],
         },
       ],
     },

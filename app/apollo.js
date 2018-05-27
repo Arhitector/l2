@@ -12,7 +12,7 @@ const link = split(
     return !!operationAST && operationAST.operation === 'subscription';
   },
   new WebSocketLink({
-    uri: `${WS_URL}/subscriptions`,
+    uri: `${WS_URL}`,
     options: {
       reconnect: true, // auto-reconnect
       // carry login state (should use secure websockets (wss) when using this)

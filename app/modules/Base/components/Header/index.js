@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import { vars } from 'app/variables';
+
+import Menu from 'app/components/MainMenu';
 
 const Wrapper = styled.header`
   background-color: ${vars.colors.main}30;
@@ -20,11 +21,13 @@ const Side = styled.aside`
 
 class Header extends React.PureComponent {
   render() {
-    console.log(this.props);
+    const { headerMenu } = this.props;
     return (
       <Wrapper>
         <Side />
         header
+        <Menu menu={headerMenu} />
+        <div>{}</div>
       </Wrapper>
     );
   }

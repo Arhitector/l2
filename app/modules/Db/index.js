@@ -5,6 +5,7 @@ class db extends React.PureComponent {
     const { db } = this.props;
     return (
         <div>
+          database
           {db}
         </div>
     );
