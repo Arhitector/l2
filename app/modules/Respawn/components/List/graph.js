@@ -8,8 +8,6 @@ export const RB_QUERY = gql`
       name
       gameId
       guards
-      drop
-      spoil
       respawnTime
       killed
       race

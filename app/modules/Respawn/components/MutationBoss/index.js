@@ -1,77 +1,20 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { get, size } from 'lodash';
-import { ADD_BOSS, RB_BY_ID_QUERY, UPDATE_BOSS } from './graph';
+import { ADD_BOSS, RB_BY_ID_QUERY, UPDATE_BOSS, UPDATE_BOSS_SUBSCRIPTION } from './graph';
 
-import Card from 'app/common/Card';
-import Input from 'app/common/Input';
-import TextArea from 'app/common/Input/textarea';
+import Form from './Form';
 
 class MutationBoss extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-
-    this.initData = this.initData.bind(this);
-    this.handleChangeValue = this.handleChangeValue.bind(this);
-  }
-
-  componentDidMount() {
-    const { bossInfo } = this.props;
-    this.initData(bossInfo);
-  }
-
-  initData(bossInfo) {
-    this.setState({ ...bossInfo });
-  }
-
-  handleChangeValue(e) {
-    get(e, 'target') && this.setState({ [e.target.name]: e.target.value });
-  }
-
   render() {
     const {
       bossInfo,
     } = this.props;
-    const {
-      _id,
-      gameId,
-      name,
-      description,
-      guards,
-      drop,
-      respawnTime,
-      race,
-    } = this.state;
+    const isUpdate = !!size(bossInfo);
     return (
-      <Mutation mutation={size(bossInfo) ? UPDATE_BOSS : ADD_BOSS} >
-        { addBoss => (<Card >
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  addBoss({
-                    variables: {
-                      raidBoss: {
-                        _id,
-                        gameId,
-                        name,
-                        description,
-                        guards,
-                        drop,
-                        respawnTime,
-                        race,
-                      },
-                    },
-                  });
-                }}
-              >
-                <Input name="name" value={name} onChange={this.handleChangeValue} />
-                <Input name="gameId" type="number" value={gameId} onChange={this.handleChangeValue} />
-                <Input name="race" value={race} onChange={this.handleChangeValue} />
-                <TextArea name="description" value={description} onChange={this.handleChangeValue} />
-                <button type="submit">Add Boss</button>
-              </form>
-            </Card>)
+      <Mutation mutation={isUpdate ? UPDATE_BOSS : ADD_BOSS} >
+        {
+          addBoss => <Form addBoss={addBoss} bossInfo={bossInfo} />
         }
       </Mutation>
     );
@@ -81,20 +24,50 @@ class MutationBoss extends React.PureComponent {
 const Boss = (props) => {
   const bossId = get(props, 'params.bossId');
   if (!bossId) return <MutationBoss />;
+  let unsubscribe = null;
   return (
+    <div>
     <Query
       query={RB_BY_ID_QUERY}
       variables={{ id: bossId }}
     >
-      {({ loading, error, data }) => {
+      {({
+        loading,
+        error,
+        data,
+        subscribeToMore,
+      }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Error :(</p>;
+        if (!unsubscribe) {
+          unsubscribe = subscribeToMore({
+              document: UPDATE_BOSS_SUBSCRIPTION,
+              updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const updatedBossData = subscriptionData.data.updatedBoss;
+                return Object.assign({}, prev, {
+                  getBossById: { ...updatedBossData },
+                });
+              },
+            });
+        }
         const bossInfo = get(data, 'getBossById');
         return (
           <MutationBoss bossInfo={bossInfo} />
         );
       }}
+
     </Query>
+    {/* <Subscription
+      subscription={UPDATE_BOSS_SUBSCRIPTION}
+    >
+        {({ data , loading }) => {
+          if (loading) return <p>Loading...</p>;
+          if (data) return <p>{data.updatedBoss.description}</p>;
+          console.log(data);
+        }}
+      </Subscription> */}
+    </div>
   );
 };
 

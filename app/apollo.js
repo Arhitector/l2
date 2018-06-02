@@ -16,9 +16,9 @@ const link = split(
     options: {
       reconnect: true, // auto-reconnect
       // carry login state (should use secure websockets (wss) when using this)
-      connectionParams: {
-        authToken: localStorage.getItem('access-token'),
-      },
+      // connectionParams: {
+      //   authToken: localStorage.getItem('access-token'),
+      // },
     },
   }),
   new HttpLink({ uri: `${GRAPH_URL}/graphql` }),
