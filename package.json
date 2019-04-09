@@ -63,5 +63,8 @@
     "webpack-dev-server": "^3.2.1",
     "webpack-merge": "^4.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "i18next": "^15.0.9",
+    "react-i18next": "^10.6.2"
+  }
 }
