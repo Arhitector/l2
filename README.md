@@ -1,35 +1,52 @@
-# Agency Client Panel
+# React Webpack Typescript Starter
+> Minimal starter with hot module replacement (HMR) for rapid development.
 
-## Quick start
+* **[React](https://facebook.github.io/react/)** (16.x)
+* **[Webpack](https://webpack.js.org/)** (4.x)
+* **[Typescript](https://www.typescriptlang.org/)** (3.x)
+* **[Hot Module Replacement (HMR)](https://webpack.js.org/concepts/hot-module-replacement/)** using [React Hot Loader](https://github.com/gaearon/react-hot-loader) (4.x)
+* [Babel](http://babeljs.io/) (7.x)
+* [SASS](http://sass-lang.com/)
+* [Jest](https://facebook.github.io/jest/) - Testing framework for React applications
+* Production build script
+* Image loading/minification using [Image Webpack Loader](https://github.com/tcoopman/image-webpack-loader)
+* Typescript compiling using [Awesome Typescript Loader](https://github.com/s-panferov/awesome-typescript-loader) (5.x)
+* Code quality (linting) for Typescript.
 
-1. Clone this repo using `git clone`
-2. Run `npm run setup` to install dependencies and clean the git repo.<br />
-   *We auto-detect `yarn` for installing packages by default, if you wish to force `npm` usage do: `USE_YARN=false npm run setup`*<br />
-   *At this point you can run `npm start` to see the example app at `http://localhost:3000`.*
-3. Run `npm run clean` to delete the example app.
+## Installation
+1. Clone/download repo
+2. `yarn install` (or `npm install` for npm)
 
-## Running
-- Run `yarn start` if you gonna work with stage server
-- Run `yarn start:prod`if you gonna work with production server
-- Run `yarn start:local` if you gonna work with local server
+## Usage
+**Development**
 
+`yarn run start-dev`
 
-## Building
-- Run `npm run build:prod` for production
-- Run `npm run build:stage` for staging
+* Build app continuously (HMR enabled)
+* App served @ `http://localhost:8888`
 
-Api urls are described in `/app/globla-constants.js`
+**Production**
 
+`yarn run start-prod`
 
-Now you're ready to rumble!
+* Build app once (HMR disabled) to `/dist/`
+* App served @ `http://localhost:3000`
 
-## Documentation
+---
 
-- [Intro](docs/general): What's included and why
-- [**Commands**](docs/general/commands.md): Getting the most out of this boilerplate
-- [Testing](docs/testing): How to work with the built-in test harness
-- [Styling](docs/css): How to work with the CSS tooling
-- [Your app](docs/js): Supercharging your app with Routing, Redux, simple
-  asynchronicity helpers, etc.
-  
-  
+**All commands**
+
+Command | Description
+--- | ---
+`yarn run start-dev` | Build app continuously (HMR enabled) and serve @ `http://localhost:8888`
+`yarn run start-prod` | Build app once (HMR disabled) to `/dist/` and serve @ `http://localhost:3000`
+`yarn run build` | Build app to `/dist/`
+`yarn run test` | Run tests
+`yarn run lint` | Run Typescript linter
+`yarn run start` | (alias of `yarn run start-dev`)
+
+**Note**: replace `yarn` with `npm` if you use npm.
+
+## See also
+* [React Webpack Babel Starter](https://github.com/vikpe/react-webpack-babel-starter)
+* [Isomorphic Webapp Starter](https://github.com/vikpe/isomorphic-webapp-starter)
