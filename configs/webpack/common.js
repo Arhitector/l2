@@ -51,4 +51,12 @@ module.exports = {
   performance: {
     hints: false,
   },
+  resolve: {
+    alias: {
+      src: resolve(__dirname, '../../src'),
+      pages: resolve(__dirname, '../../src/pages'),
+      components: resolve(__dirname, '../../src/components'),
+    },
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.png', '.jpg', '.gif', '.jpeg'],
+  },
 };

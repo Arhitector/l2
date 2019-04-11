@@ -8,7 +8,13 @@
         "jsx": "react",
         "lib": ["es5", "es6", "dom"],
         "resolveJsonModule": true,
-        "esModuleInterop": true  
+        "esModuleInterop": true,
+        "baseUrl": "./",
+        "paths": {
+            "src/*": ["src/*"],
+            "pages/*": ["src/pages/*"],
+            "components/*": ["src/components/*"]
+        }
     },
     "include": [
         "./src/**/*"

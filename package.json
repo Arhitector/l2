@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "i18next": "^15.0.9",
-    "react-i18next": "^10.6.2"
+    "react-i18next": "^10.6.2",
+    "styled-components": "^4.2.0"
   }
 }
