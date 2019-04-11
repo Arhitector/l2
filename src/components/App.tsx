@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useTranslation, withTranslation, Trans } from 'react-i18next';
-// import { translate, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface AppProps {
 }
