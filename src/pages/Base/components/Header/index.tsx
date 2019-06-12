@@ -2,36 +2,38 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { colors, gap, custom } from 'src/variables';
-import Menu from 'components/MainMenu';
-
-import { menuList } from 'pages/Base/index';
 
 const Wrapper = styled.header`
+  grid-area: header;
+  display: grid;
+  grid-template: 'headerSide headerMain headerMenu';
+  grid-template-columns: ${custom.aside} 1fr ${custom.aside};
   background-color: ${colors.main}30;
-  display: flex;
-  width: 100%;
-  height: 4rem;
   padding: ${gap.g3};
 `;
 
 const Side = styled.aside`
-  width: calc(${custom.aside} - ${gap.g3});
-  height: 100%;
+  grid-area: headerSide;
   padding-right: ${gap.g3};
   box-sizing: border-box;
 `;
 
+const Content = styled.div`
+  grid-area: headerMain;
+`;
+const StyledMenu = styled.div`
+  grid-area: headerMenu;
+`;
+
 interface Props {
-  headerMenu: any,
 };
 
-const Header: React.FC<Props> = ({ headerMenu }) => {
+const Header: React.FC<Props> = () => {
   return (
     <Wrapper>
       <Side />
-      header
-      <Menu menu={headerMenu} />
-      <div>{}</div>
+      <Content>header</Content>
+      <StyledMenu />
     </Wrapper>
   );
 };

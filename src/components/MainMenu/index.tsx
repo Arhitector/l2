@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { colors } from 'src/variables';
 
-import { menuList } from 'pages/Base/index';
+import { menuList } from 'pages/Base/menu';
 
 const Nav = styled.nav`
   display: flex;
@@ -24,18 +24,16 @@ const MenuItem = styled(Link)`
   }
 `;
 
-
 interface Props {
-  menu: any
 };
 
-const MainMenu: React.FC<Props> = ({ menu }) => {
-  if( menu ) null;
+const MainMenu: React.FC<Props> = () => {
+  if( menuList ) null;
   return (
       <Nav>
         {
-          menu.map(item => (
-            <MenuItem to={item.src} >
+          menuList.map((item, index) => (
+            <MenuItem to={item.url} key={index} >
               {item.icon}{item.name}
             </MenuItem>
           ))
