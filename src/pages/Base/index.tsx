@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
 import styled from 'styled-components';
 import { get, compact, size } from 'lodash';
-import { custom, colors } from 'src/variables';
 
+
+import { initialPageState, pageReducer } from 'src/reducers/page';
+import { custom, colors } from 'src/variables';
+import Typography from 'components/Typography';
 import Header from './components/Header';
 import Side from './components/Side';
 import Footer from './components/Footer';
@@ -44,13 +47,24 @@ const Content = styled.main`
   padding: 2rem;
 `;
 
+export const BaseContext = createContext(null);
+
 const Base: React.FC<Props> = ({ children }) => {
+  const [ state, dispatch ] = useReducer(pageReducer, initialPageState);
+  const pageTitle = state.title;
+  useEffect(() => {
+    return () => console.log('unmount');
+  }, [state]);
   return (
     <Wrapper>
       <Header />
       <Side />
       <Content>
-        {React.Children.toArray(children)}
+        <BaseContext.Provider value={{dispatch}} >
+          { !!pageTitle && <Typography> {pageTitle} </Typography> }
+          {/* {React.Children.toArray(children)} */}
+          {React.cloneElement(children, { dispatch  })}
+        </BaseContext.Provider>
       </Content>
       <Footer />
     </Wrapper>

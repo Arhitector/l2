@@ -33,7 +33,7 @@ export const menuList: any =  [
   },
   {
     name: 'Calculators',
-    url: '/calculator',
+    url: '/calculators',
   },
   {
     name: 'Respawn',
@@ -44,5 +44,9 @@ export const menuList: any =  [
         url: '/respawn/mutation-boss',
       },
     ],
+  },
+  {
+    name: 'Settings',
+    url: '/settings',
   },
 ];

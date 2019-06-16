@@ -13,6 +13,16 @@ export const gap = {
   g6: '24px',
 };
 
+export const fz = {
+  h1: '1.15rem',
+}
+
+export const ff = {
+  main: "'Nunito', sans-serif",
+};
+
 export const custom = {
   aside: '14rem',
+  header: '4rem',
+  footer: '2rem',
 };

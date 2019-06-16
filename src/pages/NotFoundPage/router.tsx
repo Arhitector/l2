@@ -3,6 +3,6 @@ import { Route } from 'react-router-dom'
 
 import NotFoudPage from './index';
 
-const routerNotFoudPage = (<Route path="/*" component={NotFoudPage} />);
+const routerNotFoudPage = (<Route path="*" render={() => <NotFoudPage />} />);
 
 export default routerNotFoudPage;
