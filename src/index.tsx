@@ -1,15 +1,13 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {AppContainer} from "react-hot-loader";
-import { HashRouter as Router } from 'react-router-dom';
 
 import {I18nextProvider} from 'react-i18next';
 
 import i18next from './translations/i18n';
 import Routers from 'src/router';
-import Base from 'src/pages/Base';
-import App from "src/components/App";
 
+import registerServiceWorker from "./webworkers/registerServiceWorker";
 
 const rootEl = document.getElementById("root");
 
@@ -23,3 +21,4 @@ render(
     </I18nextProvider>,
     rootEl
 );
+registerServiceWorker();
