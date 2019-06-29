@@ -66,11 +66,19 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@apollo/react-hooks": "0.1.0-beta.10",
     "@emotion/core": "^10.0.14",
     "@emotion/styled": "^10.0.14",
+    "apollo-boost": "^0.4.3",
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link-http": "^1.5.15",
     "enzyme": "^3.10.0",
+    "graphql": "^14.4.1",
+    "graphql-tag": "^2.10.1",
     "i18next": "^15.0.9",
     "moment": "^2.24.0",
+    "react-apollo": "^2.5.8",
     "react-i18next": "^10.6.2"
   }
 }

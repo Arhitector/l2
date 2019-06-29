@@ -3,19 +3,24 @@ import { useTranslation } from 'react-i18next';
 
 import { BaseContext } from 'src/pages/Base';
 import BossesList from './components/BossesList';
+import respawnQuery from './RespawnQuery';
 
-const RespawnPage= () => {
+interface Props {};
+
+const RespawnPage: React.StatelessComponent<Props> = () => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(true);
+  let { data, error, loading } = respawnQuery();
+  console.log(data, error, loading);
+  const [loadingPage, setLoadingPage] = useState(true);
   const {dispatch} = useContext(BaseContext);
   useEffect(() => {
-    setLoading(false);
+    setLoadingPage(false);
     dispatch({type: 'PAGE_TITLE', payload: { title: t('titles.respawn') }});
     return () => dispatch({type: 'RESET'});
   }, []);
   return (
     <div>
-      { !loading && <BossesList /> }
+      { !loadingPage && <BossesList /> }
     </div>
   );
 }
