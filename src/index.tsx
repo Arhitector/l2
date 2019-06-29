@@ -7,7 +7,7 @@ import {I18nextProvider} from 'react-i18next';
 import i18next from './translations/i18n';
 import Routers from 'src/router';
 
-import registerServiceWorker from "./webworkers/registerServiceWorker";
+import registerServiceWorker from "./workers/registerServiceWorker";
 
 const rootEl = document.getElementById("root");
 
