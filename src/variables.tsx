@@ -2,6 +2,9 @@ export const colors = {
   primary: '#772036',
   main: '#000000',
   opposite: '#FFFFFF',
+  success: '#28a745',
+  error: '#dc3545',
+  expect: '#ffc107',
 };
 
 export const gap = {

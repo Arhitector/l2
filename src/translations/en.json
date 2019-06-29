@@ -5,5 +5,10 @@
     "calculators": "calculators",
     "respawn": "respawn",
     "settings": "settings"
+  },
+  "respawnMessages": {
+    "waitForRespawn": "Waiting for respawn",
+    "respawnInProcess": "respawn in process",
+    "respawnWasEnded": "respawn was ended"
   }
 }

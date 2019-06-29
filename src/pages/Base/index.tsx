@@ -1,10 +1,10 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { get, compact, size } from 'lodash';
 
 
 import { initialPageState, pageReducer } from 'src/reducers/page';
-import { custom, colors } from 'src/variables';
+import { custom, colors, ff } from 'src/variables';
 import Typography from 'components/Typography';
 import Header from './components/Header';
 import Side from './components/Side';
@@ -35,9 +35,12 @@ const Wrapper = styled.div`
   min-height: 100vh;
 
   background-color: ${colors.primary};
-  background: ${colors.primary} url("http://byrushan.com/projects/super-admin/app/2.1.2/img/bg/1.jpg");
+  background: #C33764;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-size: 100% 100%;
   color: ${colors.opposite};
+  font-family: ${ff.main};
   /* background: radial-gradient(60% 100% ellipse at 65% 100%, #4d171b 0%, #4d171b 45%, #cc4734 60%, #DE8657 65%, #f49754 70%, transparent), ${colors.primary}; */
 `;
 const Content = styled.main`
@@ -52,9 +55,6 @@ export const BaseContext = createContext(null);
 const Base: React.FC<Props> = ({ children }) => {
   const [ state, dispatch ] = useReducer(pageReducer, initialPageState);
   const pageTitle = state.title;
-  useEffect(() => {
-    return () => console.log('unmount');
-  }, [state]);
   return (
     <Wrapper>
       <Header />
