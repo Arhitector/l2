@@ -66,6 +66,8 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
     "enzyme": "^3.10.0",
     "i18next": "^15.0.9",
     "react-i18next": "^10.6.2",

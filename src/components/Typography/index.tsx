@@ -1,12 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { fz, ff } from 'src/variables';
+import { fz } from 'src/variables';
 
 const H1 = styled.h1`
     text-transform: uppercase;
     font-size: ${fz.h1};
-    font-family: ${ff.main};
     font-weight: 600;
 `;
 
