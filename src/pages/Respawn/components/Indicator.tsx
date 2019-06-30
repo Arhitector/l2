@@ -10,7 +10,7 @@ const Indicate = styled('span')`
   border-radius: 50%;
   width: 1em;
   height: 1em;
-  background-color: ${(props: { bgColor: boolean | string; }) => props.bgColor || colors.expect};
+  background-color: ${(props: { bgColor: boolean | string; }) => props.bgColor || colors.warning};
   cursor: help;
 `;
 

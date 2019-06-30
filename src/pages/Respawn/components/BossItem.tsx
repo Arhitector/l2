@@ -5,15 +5,16 @@ import moment from 'moment';
 import Card from 'src/components/Card';
 import RespawnLine from './RespawnLine';
 import Indicator from './Indicator';
+import Button from 'components/Button'
+
 import { colors } from 'src/variables';
-import { stat } from 'fs';
 
 const RESPAWN_WAIT = 'RESPAWN_WAIT';
 const RESPAWN_IS_GOIN = 'RESPAWN_IS_GOIN';
 const RESPAWN_END = 'RESPAWN_END';
 
 const StyledCard = styled(Card)({
-  flex: '1 0 300px',
+  flex: '1 0 250px',
   flexDirection: 'column',
   margin: '15px',
   h3: {
@@ -39,7 +40,7 @@ const reducer = (state, action) => {
     case RESPAWN_WAIT:
       return {
         hintMessage: 'respawnMessages.waitForRespawn',
-        bgColor: colors.expect,
+        bgColor: colors.warning,
         showRespawnLine: false,
       };
     case RESPAWN_IS_GOIN:
@@ -51,7 +52,7 @@ const reducer = (state, action) => {
     case RESPAWN_END:
       return {
         hintMessage: 'respawnMessages.respawnWasEnded',
-        bgColor: colors.error,
+        bgColor: colors.danger,
         showRespawnLine: false,
       };
     default:
@@ -85,7 +86,10 @@ const BossesItem = ({boss}) => {
   const { bgColor, showRespawnLine, hintMessage } = state;
   return (<StyledCard >
     <h3>{boss.name} <Indicator bgColor={bgColor} hintMessage={hintMessage} /></h3>
+    <div>
     { IsRespawnEnd && <div>Killed by:</div> }
+    <Button primary >Killed</Button>
+    </div>
     <RespawnDates><span>{respawnStart.format('D MMM H:mm')}</span><span>{respawnEnd.format('D MMM H:mm')}</span></RespawnDates>
     { showRespawnLine &&  <RespawnLine respawnStart={respawnStart} respawnEnd={respawnEnd} /> }
   </StyledCard>);

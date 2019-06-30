@@ -3,10 +3,17 @@ import { useQuery } from '@apollo/react-hooks';
 
 export const query = gql`
   {
-    bossById(_id: "5af71e41c22b6f1156bed76a") {
-      name
+    bossConnection ( sort: _ID_ASC ) {
+      edges {
+        node {
+          name
+          respawnStartTime
+          respawnEndTime
+          killed
+        }
+      }
     }
   }
 `;
 
-export default () => useQuery(query);
+export default ({ ...params }) => useQuery(query, { variables: params } );
