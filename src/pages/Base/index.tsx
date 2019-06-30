@@ -33,15 +33,11 @@ const Wrapper = styled.div`
   grid-template-rows: auto 1fr auto;
   grid-template-columns: ${custom.aside} 1fr;
   min-height: 100vh;
-
-  background-color: ${colors.primary};
-  background: #C33764;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-color: ${colors.main};
+  background: linear-gradient(to right, #1D2671, #C33764);
   background-size: 100% 100%;
-  color: ${colors.opposite};
+  color: ${colors.secondary};
   font-family: ${ff.main};
-  /* background: radial-gradient(60% 100% ellipse at 65% 100%, #4d171b 0%, #4d171b 45%, #cc4734 60%, #DE8657 65%, #f49754 70%, transparent), ${colors.primary}; */
 `;
 const Content = styled.main`
   grid-area: main;

@@ -6,7 +6,7 @@ import Menu from 'src/components/MainMenu';
 
 const Wrapper = styled.aside`
   grid-area: side;
-  background-color: ${colors.main}12;
+  background-color: ${colors.secondary}12;
   padding: ${gap.g3};
 `;
 

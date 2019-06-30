@@ -1,10 +1,14 @@
 export const colors = {
-  primary: '#772036',
-  main: '#000000',
-  opposite: '#FFFFFF',
+  main: '#772036',
+  opposite: '#000',
+
+  primary: '#007bff',
+  secondary: '#FFFFFF',
   success: '#28a745',
-  error: '#dc3545',
-  expect: '#ffc107',
+  danger: '#dc3545',
+  warning: '#ffc107',
+  info: '#17a2b8',
+  light: 'rgba(255,255,255,.125)',
 };
 
 export const gap = {

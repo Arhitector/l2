@@ -8,7 +8,7 @@ const Wrapper = styled.header`
   display: grid;
   grid-template: 'headerSide headerMain headerMenu';
   grid-template-columns: ${custom.aside} 1fr ${custom.aside};
-  background-color: ${colors.main}30;
+  background-color: ${colors.secondary}30;
   padding: ${gap.g3};
 `;
 

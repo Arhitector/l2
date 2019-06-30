@@ -13,14 +13,14 @@ const Nav = styled.nav`
 
 const MenuItem = styled(Link)`
   width: 100%;
-  color: ${colors.opposite}70;
+  color: ${colors.secondary}70;
   font-size: 0.8rem;
   display: flex;
   align-items: center;
   height: 3rem;
   &:hover {
-    background-color: ${colors.opposite}08;
-    color: ${colors.opposite};
+    background-color: ${colors.secondary}08;
+    color: ${colors.secondary};
   }
 `;
 

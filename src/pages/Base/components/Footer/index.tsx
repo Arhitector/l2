@@ -5,7 +5,7 @@ import { colors, gap } from 'src/variables';
 
 const Wrapper = styled.footer`
   grid-area: footer;
-  background-color: ${colors.main}12;
+  background-color: ${colors.opposite}12;
   padding: ${gap.g3};
 `;
 
