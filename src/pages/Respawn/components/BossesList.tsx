@@ -11,7 +11,7 @@ const List = styled.div`
 `;
 
 const BossesList = ({ bossesList }) => (<List>
-  {bossesList.map((boss, index) => <BossItem key={index} boss={boss.node} />)}
+  {bossesList.map((boss, index) => <BossItem key={index} boss={boss} />)}
 </List>);
 
 export default BossesList;

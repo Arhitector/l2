@@ -5,7 +5,8 @@ import moment from 'moment';
 import Card from 'src/components/Card';
 import RespawnLine from './RespawnLine';
 import Indicator from './Indicator';
-import Button from 'components/Button'
+import Button from 'components/Button';
+import updateBossMutation from '../UpdateBossMutation';
 
 import { colors } from 'src/variables';
 
@@ -67,6 +68,8 @@ const BossesItem = ({boss}) => {
   const respawnEnd = moment(boss.killedTime).add(boss.respawnEndTime, 'h');
   const isRespawn = moment().isBetween(respawnStart, respawnEnd);
   const IsRespawnEnd = moment().isAfter(respawnEnd);
+  console.log(boss.killedTime);
+  let updateBoss = updateBossMutation();
 
   useEffect(() => {
     if(isRespawn) {
@@ -88,7 +91,12 @@ const BossesItem = ({boss}) => {
     <h3>{boss.name} <Indicator bgColor={bgColor} hintMessage={hintMessage} /></h3>
     <div>
     { IsRespawnEnd && <div>Killed by:</div> }
-    <Button primary >Killed</Button>
+    <Button primary onClick={() => updateBoss({
+        variables: {
+          _id: boss._id,
+          killedTime: new Date(),
+        }
+    }) } >Killed</Button>
     </div>
     <RespawnDates><span>{respawnStart.format('D MMM H:mm')}</span><span>{respawnEnd.format('D MMM H:mm')}</span></RespawnDates>
     { showRespawnLine &&  <RespawnLine respawnStart={respawnStart} respawnEnd={respawnEnd} /> }

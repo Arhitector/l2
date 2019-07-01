@@ -16,7 +16,7 @@ const RespawnPage: React.StatelessComponent<Props> = () => {
   console.log(data, error, loading);
   const [loadingPage, setLoadingPage] = useState(true);
   const { dispatch } = useContext(BaseContext);
-  const bossesList = get(data, 'bossConnection.edges');
+  const bossesList = get(data, 'bossesMany');
   useEffect(() => {
     setLoadingPage(false);
     dispatch({type: 'PAGE_TITLE', payload: { title: t('titles.respawn') }});

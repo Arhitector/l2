@@ -58,7 +58,6 @@ const Base: React.FC<Props> = ({ children }) => {
       <Content>
         <BaseContext.Provider value={{dispatch}} >
           { !!pageTitle && <Typography> {pageTitle} </Typography> }
-          {/* {React.Children.toArray(children)} */}
           {React.cloneElement(children, { dispatch  })}
         </BaseContext.Provider>
       </Content>
