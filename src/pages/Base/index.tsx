@@ -1,9 +1,6 @@
-import React, { createContext, useReducer, useEffect } from 'react';
+import React, { createContext, useState, useCallback, useMemo } from 'react';
 import styled from '@emotion/styled';
-import { get, compact, size } from 'lodash';
 
-
-import { initialPageState, pageReducer } from 'src/reducers/page';
 import { custom, colors, ff } from 'src/variables';
 import Typography from 'components/Typography';
 import Header from './components/Header';
@@ -19,10 +16,10 @@ export interface menuList {
     }
   ]
 };
+
 interface Props {
   children: any,
 };
-
 
 const Wrapper = styled.div`
   display: grid;
@@ -49,21 +46,29 @@ const Content = styled.main`
 export const BaseContext = createContext(null);
 
 const Base: React.FC<Props> = ({ children }) => {
-  const [ state, dispatch ] = useReducer(pageReducer, initialPageState);
-  const pageTitle = state.title;
+  console.log('Base');
+  const [ pageTitle, setPageTitle] = useState('');
+  
+  const setTitle = useCallback(p => {
+    console.log('setPageTitle', p);
+    setPageTitle(p);
+  }, []);
+
   return (
     <Wrapper>
       <Header />
       <Side />
       <Content>
-        <BaseContext.Provider value={{dispatch}} >
-          { !!pageTitle && <Typography> {pageTitle} </Typography> }
-          {React.cloneElement(children, { dispatch  })}
+        <BaseContext.Provider value={{ setTitle }} >
+          { !!pageTitle && <Typography> { pageTitle } </Typography> }
+          { children }
         </BaseContext.Provider>
       </Content>
       <Footer />
     </Wrapper>
   );
 };
+
+
 
 export default Base;

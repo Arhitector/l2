@@ -5,10 +5,9 @@ import { BaseContext } from 'src/pages/Base';
 
 const HomePage= () => {
   const { t } = useTranslation();
-  const {dispatch} = useContext(BaseContext);
+  const { setTitle } = useContext(BaseContext);
   useEffect(() => {
-    dispatch({type: 'PAGE_TITLE', payload: { title: t('titles.home') }});
-    return () => dispatch({type: 'RESET'});
+    setTitle( t('titles.home'));
   }, []);
   return (
     <div>
