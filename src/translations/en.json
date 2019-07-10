@@ -4,7 +4,8 @@
     "database": "Database",
     "calculators": "calculators",
     "respawn": "respawn",
-    "settings": "settings"
+    "settings": "settings",
+    "account": "accounts"
   },
   "respawnMessages": {
     "waitForRespawn": "Waiting for respawn",

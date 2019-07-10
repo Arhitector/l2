@@ -46,6 +46,10 @@ export const menuList: any =  [
     ],
   },
   {
+    name: 'Accounts',
+    url: '/accounts',
+  },
+  {
     name: 'Settings',
     url: '/settings',
   },
