@@ -10,8 +10,11 @@ const List = styled.div`
   align-items: stretch;
 `;
 
-const BossesList = ({ bossesList }) => (<List>
+const BossesList = ({ bossesList }) => {
+  console.log('RespawnList');
+  return (<List>
   {bossesList.map((boss, index) => <BossItem key={index} boss={boss} />)}
 </List>);
+};
 
 export default BossesList;

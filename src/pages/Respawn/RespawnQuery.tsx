@@ -1,3 +1,4 @@
+/* tslint:disable */
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -13,4 +14,8 @@ export const query = gql`
   }
 `;
 
-export default ({ ...params }) => useQuery(query, { variables: params } );
+export default ({ ...params }) => useQuery(query, {
+  variables: params,
+  // @ts-ignore: Unreachable code error
+   suspend: true
+} );

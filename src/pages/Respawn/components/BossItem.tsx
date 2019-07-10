@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import styled from '@emotion/styled';
 import moment from 'moment';
+import Cookies from 'js-cookie';
 
+import { TRACKING_IDS } from 'src/vars/cookies';
 import Card from 'src/components/Card';
 import RespawnLine from './RespawnLine';
 import Indicator from './Indicator';
@@ -30,73 +32,62 @@ const RespawnDates = styled.div`
   margin-top: auto;
 `;
 
-const initialState = {
-  hintMessage: '',
-  bgColor: '',
-  showRespawnLine: false,
-};
+const status = {
+  wait: {
+    hintMessage: 'respawnMessages.waitForRespawn',
+    bgColor: colors.warning,
+    showRespawnLine: false,
+  },
+  isGoing: {
+    hintMessage: 'respawnMessages.respawnInProcess',
+    bgColor: colors.success,
+    showRespawnLine: true,
+  },
+  end: {
+    hintMessage: 'respawnMessages.respawnWasEnded',
+    bgColor: colors.danger,
+    showRespawnLine: false,
+  },
+}
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case RESPAWN_WAIT:
-      return {
-        hintMessage: 'respawnMessages.waitForRespawn',
-        bgColor: colors.warning,
-        showRespawnLine: false,
-      };
-    case RESPAWN_IS_GOIN:
-      return {
-        hintMessage: 'respawnMessages.respawnInProcess',
-        bgColor: colors.success,
-        showRespawnLine: true,
-      };
-    case RESPAWN_END:
-      return {
-        hintMessage: 'respawnMessages.respawnWasEnded',
-        bgColor: colors.danger,
-        showRespawnLine: false,
-      };
-    default:
-      return state;
-  }
-};
-
-const BossesItem = ({boss}) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const BossesItem = ({ boss }) => {
+  console.log('BossesItem');
   
   const respawnStart = moment(boss.killedTime).add(boss.respawnStartTime, 'h');
   const respawnEnd = moment(boss.killedTime).add(boss.respawnEndTime, 'h');
   const isRespawn = moment().isBetween(respawnStart, respawnEnd);
   const IsRespawnEnd = moment().isAfter(respawnEnd);
-  console.log(boss.killedTime);
+  const initState = isRespawn && status.isGoing || IsRespawnEnd && status.end || status.wait;
+  const [state, setState] = useState(initState);
+
   let updateBoss = updateBossMutation();
 
   useEffect(() => {
-    if(isRespawn) {
-      dispatch({ type: RESPAWN_IS_GOIN });
-    } else if (IsRespawnEnd) {
-      dispatch({ type: RESPAWN_END });
-    } else {
-      dispatch({ type: RESPAWN_WAIT });
-    }
 
     isRespawn && setTimeout(
-      () => dispatch({ type: RESPAWN_END }),
+      () => setState(status.end),
       moment(respawnEnd).diff(moment())
     );
   }, []);
+
+  const handleKillBoss = () => updateBoss({
+    variables: {
+      _id: boss._id,
+      killedTime: new Date(),
+    }
+  });
+
+  const handleTrackBoss = () => {
+    
+  };
   
   const { bgColor, showRespawnLine, hintMessage } = state;
   return (<StyledCard >
     <h3>{boss.name} <Indicator bgColor={bgColor} hintMessage={hintMessage} /></h3>
     <div>
     { IsRespawnEnd && <div>Killed by:</div> }
-    <Button primary onClick={() => updateBoss({
-        variables: {
-          _id: boss._id,
-          killedTime: new Date(),
-        }
-    }) } >Killed</Button>
+    <Button primary onClick={handleKillBoss} >Killed</Button>
+    <Button primary onClick={handleTrackBoss} >track boss</Button>
     </div>
     <RespawnDates><span>{respawnStart.format('D MMM H:mm')}</span><span>{respawnEnd.format('D MMM H:mm')}</span></RespawnDates>
     { showRespawnLine &&  <RespawnLine respawnStart={respawnStart} respawnEnd={respawnEnd} /> }

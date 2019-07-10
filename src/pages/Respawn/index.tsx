@@ -1,32 +1,43 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import { BaseContext } from 'src/pages/Base';
 import BossesList from './components/BossesList';
 import respawnQuery from './RespawnQuery';
 
-interface Props {};
+interface Props {
+  
+};
+
+const ListWrapper = () => {
+  let { data, error, loading } = respawnQuery({
+    filter: { ids: [] }
+  });
+  const bossesList = get(data, 'bossesMany');
+  
+  if (loading) {
+    return <span>Loading...</span>;
+  };
+
+  return  !loading && !isEmpty(bossesList) && <BossesList bossesList={bossesList} />;
+}
 
 const RespawnPage: React.StatelessComponent<Props> = () => {
+  console.log('RespawnPage');
   const { t } = useTranslation();
-  let { data, error, loading } = respawnQuery({
-    filter: { }
-  });
-  console.log(data, error, loading);
-  const [loadingPage, setLoadingPage] = useState(true);
-  const { dispatch } = useContext(BaseContext);
-  const bossesList = get(data, 'bossesMany');
+  const { setTitle } = useContext(BaseContext);
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
-    setLoadingPage(false);
-    dispatch({type: 'PAGE_TITLE', payload: { title: t('titles.respawn') }});
-    return () => dispatch({type: 'RESET'});
+    setTitle( t('titles.respawn'));
+    setLoading(false);
+
   }, []);
-  if (!bossesList) return null;
+  if (loading) return null;
+
   return (
-    <div>
-      { !loadingPage && <BossesList bossesList={bossesList} /> }
-    </div>
+    <ListWrapper />
   );
 }
 
