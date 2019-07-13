@@ -1,10 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { SFC, useState, useRef, memo, ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 import { Row, Cell } from 'components/Table/basic';
 import Tooltip from 'components/Tooltip';
 
 import { colors } from 'src/variables';
+
+import { Account, СopyToClipboard, Character } from '../interfaces';
+
+type AccountType = {
+  account: Account,
+};
 
 const PasswordButton = styled('button')`
   &:hover {
@@ -22,15 +28,15 @@ const Copied = styled(Tooltip)`
   white-space: nowrap;
 `;
 
-const Account = ({ account }) => {
+const Account: SFC<AccountType> = ({ account }) => {
   console.log('Account');
 
-  const [showCharacters, setShowCharacters] = useState(false);
-  const [copySuccess, setCopySuccess] = useState('click to copy');
+  const [showCharacters, setShowCharacters] = useState<boolean>(false);
+  const [copySuccess, setCopySuccess] = useState<string>('click to copy');
   const passwordRef = useRef(null);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(account.password)
+  const copyToClipboard: СopyToClipboard = () => {
+    navigator.clipboard.writeText(account.password);
     setCopySuccess('Copied!');
   };
 
@@ -53,7 +59,7 @@ const Account = ({ account }) => {
         <Cell>edit</Cell>
       </Row>
       {
-        showCharacters && account.characters.map((character, i) => (
+        showCharacters && account.characters.map((character: Character, i:number) => (
           <Row key={i} >
             <Cell>{character.name}</Cell>
           </Row>
@@ -63,4 +69,4 @@ const Account = ({ account }) => {
   );
 }
 
-export default Account;
+export default memo(Account);

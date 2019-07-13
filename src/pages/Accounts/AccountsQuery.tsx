@@ -10,17 +10,21 @@ export const query = gql`
   query UserById($_id: MongoID!) {
     userById(_id: $_id) {
       name
-      accounts {
-        login
-        password
-        description
-        characters {
-          name
-          proffesions {
-            class
-            isMain
-            level
-            description
+      servers{
+        name
+        link
+        accounts {
+          login
+          password
+          description
+          characters {
+            name
+            professions {
+              class
+              isMain
+              level
+              professionsDescription
+            }
           }
         }
       }
