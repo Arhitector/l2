@@ -1,2 +1,0 @@
-export const l2States = ['str', 'dex', 'con', 'int', 'wit', 'men'];
-export const l2StatesAdditional = ['Accuracy', 'Attack Speed', 'Critical', 'Evasion', 'Speed', 'Load', 'Casting Speed', 'Physical Attack', 'Magical Attack'];

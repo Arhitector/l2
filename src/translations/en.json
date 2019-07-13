@@ -1,0 +1,15 @@
+{
+  "titles": {
+    "home": "home",
+    "database": "Database",
+    "calculators": "calculators",
+    "respawn": "respawn",
+    "settings": "settings",
+    "account": "accounts"
+  },
+  "respawnMessages": {
+    "waitForRespawn": "Waiting for respawn",
+    "respawnInProcess": "respawn in process",
+    "respawnWasEnded": "respawn was ended"
+  }
+}
