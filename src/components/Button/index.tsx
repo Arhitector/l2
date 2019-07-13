@@ -21,6 +21,8 @@ type ButtonProps = {
   round?: boolean,
   link?: boolean,
   to?: string,
+  type?: 'button' | 'reset' | 'submit',
+  disabled?: boolean,
   onClick?: () => void,
   
   primary?: boolean,
@@ -87,12 +89,14 @@ const Button = (props: ButtonProps) => {
     round,
     to,
     onClick,
+    type,
+    disabled,
     ...color
   } = props;
 
   return to
     ? <Link className={className} href={to} round={round} {...color} >{ children }</Link>
-    : <ButtonW className={className} onClick={onClick}  round={round} {...color} >{ children }</ButtonW>
+    : <ButtonW className={className} type={type} disabled={disabled} onClick={onClick}  round={round} {...color} >{ children }</ButtonW>
   ;
 };
 
