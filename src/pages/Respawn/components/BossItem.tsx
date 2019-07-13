@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import styled from '@emotion/styled';
 import moment from 'moment';
-import Cookies from 'js-cookie';
 
-import { TRACKING_IDS } from 'src/vars/cookies';
 import Card from 'src/components/Card';
 import RespawnLine from './RespawnLine';
 import Indicator from './Indicator';
@@ -11,10 +9,6 @@ import Button from 'components/Button';
 import updateBossMutation from '../UpdateBossMutation';
 
 import { colors } from 'src/variables';
-
-const RESPAWN_WAIT = 'RESPAWN_WAIT';
-const RESPAWN_IS_GOIN = 'RESPAWN_IS_GOIN';
-const RESPAWN_END = 'RESPAWN_END';
 
 const StyledCard = styled(Card)({
   flex: '1 0 250px',

@@ -32,7 +32,6 @@ const RespawnPage: React.StatelessComponent<Props> = () => {
   useEffect(() => {
     setTitle( t('titles.respawn'));
     setLoading(false);
-
   }, []);
   if (loading) return null;
 
