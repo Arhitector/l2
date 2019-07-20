@@ -29,6 +29,7 @@
     "start": "yarn run start-dev",
     "start-dev": "webpack-dev-server --config=configs/webpack/dev.js",
     "start-prod": "yarn run build && node express.js",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest --watch --coverage --config=configs/jest.json"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/react": "^5.1.9",
     "@types/jest": "^24.0.11",
     "@types/node": "^11.11.4",
     "@types/react": "^16.8.8",
@@ -51,6 +53,7 @@
     "jest": "^24.5.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
+    "react-docgen-typescript-loader": "^3.1.0",
     "react-dom": "^16.8.4",
     "react-hot-loader": "^4.8.0",
     "react-router-dom": "^5.0.0",
@@ -69,6 +72,7 @@
     "@apollo/react-hooks": "0.1.0-beta.10",
     "@emotion/core": "^10.0.14",
     "@emotion/styled": "^10.0.14",
+    "@storybook/addon-actions": "^5.1.9",
     "apollo-boost": "^0.4.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",

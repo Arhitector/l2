@@ -1,22 +1,26 @@
 import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { darken, lighten } from 'polished';
-import { colors } from 'src/variables';
+import { colors } from '../../variables';
+
+type InnerColorsProps = {
+  bg?: string,
+  cl?: string,
+};
 
 type InnerProps = {
   round?: boolean,
   href?: string,
-  primary?: boolean,
-  secondary?: boolean,
-  success?: boolean,
-  danger?: boolean,
-  warning?: boolean,
-  info?: boolean,
+  colors?: InnerColorsProps,
   framed?: boolean,
 };
 
+type InnerPropsColors = {
+  [key: string]: InnerColorsProps,
+};
+
 type ButtonProps = {
-  children: ReactNode,
+  children: ReactNode | string,
   className?: string,
   round?: boolean,
   link?: boolean,
@@ -24,7 +28,6 @@ type ButtonProps = {
   type?: 'button' | 'reset' | 'submit',
   disabled?: boolean,
   onClick?: () => void,
-  
   primary?: boolean,
   secondary?: boolean,
   success?: boolean,
@@ -34,53 +37,63 @@ type ButtonProps = {
   framed?: boolean,
 };
 
-const getBgColor = props => 
-  props.primary && colors.primary ||
-  props.secondary  && colors.secondary ||
-  props.success && colors.success ||
-  props.danger && colors.danger ||
-  props.warning && colors.warning ||
-  props.info && colors.info ||
-  'transparent';
+const bgColor: InnerPropsColors = {
+  primary: {
+    bg: colors.primary,
+    cl: colors.secondary,
+  },
+  secondary: {
+    bg: colors.secondary,
+    cl: colors.opposite,
+  },
+  success: {
+    bg: colors.success,
+    cl: colors.secondary,
+  },
+  danger: {
+    bg: colors.danger,
+    cl: colors.secondary,
+  },
+  warning: {
+    bg: colors.warning,
+    cl: colors.opposite,
+  },
+  info: {
+    bg: colors.info,
+    cl: colors.secondary,
+  },
+};
 
-const getColor = props => 
-  props.primary && colors.secondary ||
-  props.secondary  && colors.opposite ||
-  props.success && colors.secondary ||
-  props.danger && colors.secondary ||
-  props.warning && colors.opposite ||
-  props.info && colors.secondary ||
+const getBgColor = ({ bg }: InnerColorsProps) => bg || 'transparent';
 
-  'initial';
+const getColor = ({ cl }: InnerColorsProps) => cl || 'initial';
 
-const Wrapper  = styled('a')<InnerProps>({
+const Wrapper  = styled('a')({
   padding: '0.4em 0.55em',
   fontSize: '0.85em',
 },
-(props) => ({
-    backgroundColor: props.framed ? 'transparent' : getBgColor(props),
-    border: props.framed ? `1px solid ${getBgColor(props)}` : '1px solid transparent',
-    color: props.framed ? getBgColor(props) : getColor(props),
-    borderRadius: props.round ? '0.25rem' : '2px',
+({ framed, round, colors }: InnerProps) => colors && ({
+    backgroundColor: framed ? 'transparent' : getBgColor(colors),
+    border: framed ? `1px solid ${getBgColor(colors)}` : '1px solid transparent',
+    color: framed ? getBgColor(colors) : getColor(colors),
+    borderRadius: round ? '0.25rem' : '2px',
     transition: 'background-color 300ms ease-in-out',
     '&:focused': {
-      outline: getBgColor(props),
+      outline: getBgColor(colors),
     },
     '&:hover': {
-      border: props.framed ? `1px solid ${darken(0.2, getBgColor(props))}` : '1px solid transparent',
-      backgroundColor: darken(0.2, getBgColor(props)),
-      color: getColor(props),
+      border: framed ? `1px solid ${darken(0.2, getBgColor(colors))}` : '1px solid transparent',
+      backgroundColor: darken(0.2, getBgColor(colors)),
+      color: getColor(colors),
     },
     '&:active': {
-      backgroundColor: lighten(0.2, getBgColor(props)),
+      backgroundColor: lighten(0.2, getBgColor(colors)),
     }
   })
 );
 
 const ButtonW = Wrapper.withComponent('button');
 const Link = Wrapper.withComponent('a');
-
-
 
 const Button = (props: ButtonProps) => {
   const {
@@ -91,12 +104,27 @@ const Button = (props: ButtonProps) => {
     onClick,
     type,
     disabled,
-    ...color
+    framed,
+    ...colors
   } = props;
-
+  const colorKey = bgColor[Object.keys(colors)[0]];
   return to
-    ? <Link className={className} href={to} round={round} {...color} >{ children }</Link>
-    : <ButtonW className={className} type={type} disabled={disabled} onClick={onClick}  round={round} {...color} >{ children }</ButtonW>
+    ? <Link
+      className={className}
+      href={to}
+      round={round}
+      colors={colorKey}
+      framed={framed}
+    >{ children }</Link>
+    : <ButtonW
+      className={className}
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      round={round}
+      colors={colorKey}
+      framed={framed}
+    >{ children }</ButtonW>
   ;
 };
 
